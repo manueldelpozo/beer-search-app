@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 
 import BeerCard from './components/BeerCard.js'
+import BeerSearchPanel from './components/BeerSearchPanel.js'
 import BeerList from './components/BeerList.js'
 
 import './App.css'
@@ -14,6 +15,7 @@ export default function App() {
     description: '',
     abv: 0
   })
+  const [beers, setBeers] = useState([])
 
   const fetchBeerById = async () => {
     const url = `https://api.punkapi.com/v2/beers?id=${ selectedBeerId }`
@@ -22,26 +24,11 @@ export default function App() {
     setSelectedBeer(json[0])
   }
 
-  // const onSelectBeer = useCallback((event, id) => {
-  //   setSelectedBeerId(id)
-  //   fetchBeerById()
-  // }, [selectedBeerId])
-
-  useEffect(() => {
-    function handleWindowMouseMove(event, details) {
-      setSelectedBeerId(details.id)
-      fetchBeerById()
-    }
-    // Note: this implementation is a bit simplified
-    window.addEventListener('on-select-beer', handleWindowMouseMove);
-    return () => window.removeEventListener('on-select-beer', handleWindowMouseMove);
-  }, []);
-
   return (
     <div className="App">
       <BeerCard { ...selectedBeer } />
-      {/* <BeerSearchPanel /> */}
-      <BeerList />
+      <BeerSearchPanel beers={ beers } />
+      <BeerList beers={ beers } />
     </div>
   )
 }
