@@ -1,5 +1,4 @@
 import React, { useState, useCallback, useEffect } from 'react'
-//import useFetchRandomBeer from '../api/useFetchRandomBeer';
 
 import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
@@ -7,7 +6,7 @@ import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 const useStyles = makeStyles({
     card: {
@@ -29,25 +28,19 @@ const useStyles = makeStyles({
     },
 })
 
-export default function BeerCard() {
+const BeerCard = props => {
     const classes = useStyles()
 
-    const [beer, setBeer] = useState({
-        id: 0,
-        image_url: '',
-        name: '',
-        description: '',
-        abv: 0
-    })
+    const [beer, setBeer] = useState(props)
     const [isNonAlcoholic, setIsNonAlcoholic] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
 
     const fetchRandomBeer = async () => {
         setIsLoading(true)
-        const url = `https://api.punkapi.com/v2/beers${isNonAlcoholic ? '?abv_lt=0.6' : '/random'}`; 
+        const url = `https://api.punkapi.com/v2/beers${isNonAlcoholic ? '?abv_lt=0.6' : '/random'}`
         const response = await fetch(url)
         const json = await response.json()
-        const count = Object.keys(json).length;
+        const count = Object.keys(json).length
         const anotherBeer = json[Math.floor(Math.random() * count - 1) + 1]
 
         if (!anotherBeer.image_url || !anotherBeer.name || !anotherBeer.description || anotherBeer.id === beer.id) {
@@ -60,7 +53,7 @@ export default function BeerCard() {
 
     useEffect(() => {
         fetchRandomBeer()
-    }, [isNonAlcoholic]);
+    }, [isNonAlcoholic])
 
     const fetchAlcoholicBeer = useCallback(() => {
         if (!isNonAlcoholic) {
@@ -82,20 +75,20 @@ export default function BeerCard() {
             {isLoading ?
             <CircularProgress className={classes.progress} /> :
             <>
-            <img
-                height="140"
-                src={ beer.image_url }
-                alt={ beer.name }
-            />
-            <Typography gutterBottom variant="h5" component="h2" className={ classes.name }>
-                { beer.name }
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="p" className={ classes.description }>
-                { beer.description }
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="strong">
-                ABV: { beer.abv } %
-            </Typography>
+                <img
+                    height="140"
+                    src={ beer.image_url }
+                    alt={ beer.name }
+                />
+                <Typography gutterBottom variant="h5" component="h2" className={ classes.name }>
+                    { beer.name }
+                </Typography>
+                <Typography variant="body2" color="textSecondary" component="p" className={ classes.description }>
+                    { beer.description }
+                </Typography>
+                <Typography variant="body2" color="textSecondary" component="strong">
+                    ABV: { beer.abv } %
+                </Typography>
             </>
             }
         </CardContent>
@@ -116,5 +109,7 @@ export default function BeerCard() {
             </Button>
         </CardActions>
     </Card>
-  );
+  )
 }
+
+export default BeerCard
