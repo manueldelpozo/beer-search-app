@@ -13,7 +13,7 @@ const useStyles = makeStyles({
     card: {
         maxWidth: '100%',
         minHeight: 400,
-        padding: 20
+        padding: 20,
     },
     cardContent: {
         minHeight: 350,
@@ -98,8 +98,9 @@ export default function BeerCard() {
             </Fragment>
             }
         </CardContent>
-        <CardActions>
+        <CardActions className={classes.cardAction}>
             <Button 
+                className={classes.actionButton}
                 variant="outlined"
                 color="primary"
                 onClick={ fetchAlcoholicBeer }
@@ -107,6 +108,7 @@ export default function BeerCard() {
                 Show me another beer
             </Button>
             <Button 
+                className={classes.actionButton}
                 variant="outlined"
                 color="secondary"
                 onClick={ fetchNonAlcoholicBeer }

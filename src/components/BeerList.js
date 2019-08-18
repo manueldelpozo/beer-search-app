@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { Fragment, useState } from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
 import List from '@material-ui/core/List'
@@ -14,7 +14,6 @@ const useStyles = makeStyles(theme => ({
     root: {
       width: '100%',
       backgroundColor: theme.palette.background.paper,
-      margin: 30
     },
     inline: {
       display: 'inline',
@@ -30,8 +29,6 @@ const BeerList = ({beers, isLoading}) => {
 
     const onSelectBeer = (event, id) => {
         setSelectedBeerId(id)
-        //const newEvent = new CustomEvent('on-select-beer', { id });
-        //document.dispatchEvent(newEvent);
     }
 
     return (

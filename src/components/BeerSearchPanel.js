@@ -1,44 +1,36 @@
 import React, { Fragment, useState, useEffect, useRef } from 'react'
 import fetchBeers from '../api/fetchBeers.js'
 import BeerList from './BeerList.js'
-import * as errorMessages from '../constants/errorMessages';
+import * as errorMessages from '../constants/errorMessages'
 
 import { makeStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
-import Button from '@material-ui/core/Button';
-import Search from '@material-ui/icons/Search';
-import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField'
+import Radio from '@material-ui/core/Radio'
+import RadioGroup from '@material-ui/core/RadioGroup'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import FormControl from '@material-ui/core/FormControl'
+import FormLabel from '@material-ui/core/FormLabel'
+import Button from '@material-ui/core/Button'
+import Search from '@material-ui/icons/Search'
+import Grid from '@material-ui/core/Grid'
 
 const useStyles = makeStyles(theme => ({
     form: {
-        width: '100%',
+        margin: theme.spacing(3),
     },
     textField: {
-        marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(1),
         width: '100%',
-        marginLeft: 30
     },
     formControl: {
-        margin: theme.spacing(3),
         width: '100%',
         textAlign: 'left',
     },
     group: {
-        margin: theme.spacing(1, 0),
         display: 'flex',
         flexDirection: 'row',
     },
     groupItem: {
         flexGrow: 1
-    },
-    button: {
-        margin: theme.spacing(1),
     },
     rightIcon: {
         marginLeft: theme.spacing(1),
@@ -55,15 +47,15 @@ export default function BeerSearchPanel() {
     const [errorMessage, setErrorMessage] = useState('')
     const [beers, setBeers] = useState([])
     const [isLoading, setIsLoading] = useState(false)
-    const inputEl = useRef(null);
+    const inputEl = useRef(null)
 
     const validation = {
         beer_name: {
-            regexp: /^[0-9A-Za-z\s\-]+$/,
+            regexp: /^[0-9A-Za-z\s-]+$/,
             errorMessage: errorMessages.ERROR_BEER_NAME
         },
         brewed_before: {
-            regexp: /^(0[1-9]|1[012])\-\d{4}$/,
+            regexp: /^(0[1-9]|1[012])-\d{4}$/,
             errorMessage: errorMessages.ERROR_BEER_BEFORE_BEWED
         }
     }
@@ -112,7 +104,7 @@ export default function BeerSearchPanel() {
     return (
         <Fragment>
             <form className={classes.form} onSubmit={ searchBeer }>
-                <Grid container spacing={10} alignItems="center">
+                <Grid container spacing={5} alignItems="center">
                     <Grid item xs={12} md={6}>
                         <TextField
                             inputRef={inputEl}
@@ -146,6 +138,7 @@ export default function BeerSearchPanel() {
                         <Button
                             variant="contained" 
                             color="default" 
+                            fullWidth
                             className={classes.button}
                             type="submit"
                         >
@@ -157,5 +150,5 @@ export default function BeerSearchPanel() {
             </form>
             <BeerList className={classes.list} beers={ beers } isLoading={ isLoading } />
         </Fragment>
-    );
+    )
 }
