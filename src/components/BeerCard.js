@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useCallback, useEffect } from 'react'
+import fetchBeers from '../api/fetchBeers.js'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
@@ -28,26 +29,31 @@ const useStyles = makeStyles({
     },
 })
 
-const BeerCard = props => {
+export default function BeerCard() {
     const classes = useStyles()
-
-    const [beer, setBeer] = useState(props)
+    const [beer, setBeer] = useState({
+        id: 0,
+        image_url: '',
+        name: '',
+        description: '',
+        abv: 0
+    })
     const [isNonAlcoholic, setIsNonAlcoholic] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
 
-    const fetchRandomBeer = async () => {
+    const fetchRandomBeer = () => {
         setIsLoading(true)
-        const url = `https://api.punkapi.com/v2/beers${isNonAlcoholic ? '?abv_lt=0.6' : '/random'}`
-        const response = await fetch(url)
-        const json = await response.json()
-        const count = Object.keys(json).length
-        const anotherBeer = json[Math.floor(Math.random() * count - 1) + 1]
+        fetchBeers(isNonAlcoholic ? '?abv_lt=0.6' : '/random').then(response => {
+            const count = Object.keys(response).length
+            const anotherBeer = response[Math.floor(Math.random() * count - 1) + 1]
 
-        if (!anotherBeer.image_url || !anotherBeer.name || !anotherBeer.description || anotherBeer.id === beer.id) {
-            fetchRandomBeer()
-        }
-        
-        setBeer(anotherBeer)
+            if (!anotherBeer.image_url || !anotherBeer.name || !anotherBeer.description || anotherBeer.id === beer.id) {
+                fetchRandomBeer()
+            }
+            setBeer(anotherBeer)
+        }).catch((error) => {
+            console.error(error)
+        })
         setIsLoading(false)
     }
 
@@ -111,5 +117,3 @@ const BeerCard = props => {
     </Card>
   )
 }
-
-export default BeerCard

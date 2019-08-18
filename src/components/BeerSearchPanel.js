@@ -1,7 +1,7 @@
-import React, { Fragment, useState, useEffect, useCallback, useRef } from 'react'
-import useFetch from '../api/useFetch.js'
-
+import React, { Fragment, useState, useEffect, useRef } from 'react'
+import fetchBeers from '../api/fetchBeers.js'
 import BeerList from './BeerList.js'
+import * as errorMessages from '../constants/errorMessages';
 
 import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField';
@@ -60,11 +60,11 @@ export default function BeerSearchPanel() {
     const validation = {
         beer_name: {
             regexp: /^[0-9A-Za-z\s\-]+$/,
-            errorMessage: 'This must only contain letters, numbers, hyphens and spaces (example: Punk IPA 2007 - 2010)'
+            errorMessage: errorMessages.ERROR_BEER_NAME
         },
         brewed_before: {
             regexp: /^(0[1-9]|1[012])\-\d{4}$/,
-            errorMessage: 'This must only contain numbers and hyphens on date format MM-YYYY (example: 04-2007)'
+            errorMessage: errorMessages.ERROR_BEER_BEFORE_BEWED
         }
     }
 
@@ -89,18 +89,23 @@ export default function BeerSearchPanel() {
         validateInput()
     }, [searchBy])
 
-    const fetchBeersBy = async () => {
+    const showErrorMessage = (message) => {
+        setIsValidInput(false)
+        setErrorMessage(message)
+        inputEl.current.focus()
+    }
+
+    const fetchBeersBy = () => {
         setIsLoading(true)
-        try {
-            const url = `https://api.punkapi.com/v2/beers?${searchBy}=${inputEl.current.value}`
-            const response = await fetch(url)
-            const json = await response.json()
-            setBeers(json)
-        } catch (error) {
-            setIsValidInput(false)
-            setErrorMessage('We cannot find your beers. Please try again')
-            inputEl.current.focus()
-        }
+        fetchBeers(`?${searchBy}=${inputEl.current.value}`).then(response => {
+            if (response.length === 0) {
+                showErrorMessage(errorMessages.ERROR_BEER_LIST_EMPTY)
+            } else {
+                setBeers(response)
+            }
+        }).catch((error) => {
+            showErrorMessage(error)
+        })
         setIsLoading(false)
     }
 

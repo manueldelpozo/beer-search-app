@@ -60,7 +60,7 @@ const BeerList = ({beers, isLoading}) => {
                             className={classes.inline}
                             color="textPrimary"
                         >
-                       { beer.tagline } - :
+                        { beer.tagline } (First Brewed in { beer.first_brewed }) :
                         </Typography>
                         { beer.description }
                     </Fragment>
