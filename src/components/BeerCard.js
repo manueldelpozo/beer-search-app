@@ -82,17 +82,35 @@ export default function BeerCard() {
             <CircularProgress className={classes.progress} /> :
             <Fragment>
                 <img
+                    data-testid="beer-image"
                     height="140"
                     src={ beer.image_url }
                     alt={ beer.name }
                 />
-                <Typography gutterBottom variant="h5" component="h2" className={ classes.name }>
+                <Typography 
+                    data-testid="beer-name"
+                    gutterBottom 
+                    variant="h5" 
+                    component="h2" 
+                    className={ classes.name }
+                >
                     { beer.name }
                 </Typography>
-                <Typography variant="body2" color="textSecondary" component="p" className={ classes.description }>
+                <Typography 
+                    data-testid="beer-description"
+                    variant="body2" 
+                    color="textSecondary" 
+                    component="p" 
+                    className={ classes.description }
+                >
                     { beer.description }
                 </Typography>
-                <Typography variant="body2" color="textSecondary" component="strong">
+                <Typography 
+                    data-testid="beer-abv"
+                    variant="body2" 
+                    color="textSecondary" 
+                    component="strong"
+                >
                     ABV: { beer.abv } %
                 </Typography>
             </Fragment>

@@ -32,7 +32,7 @@ const BeerList = ({beers, isLoading}) => {
     }
 
     return (
-        <List className={classes.root}>
+        <List className={classes.root} data-testid="beer-list">
             {isLoading ?
             <CircularProgress className={classes.progress} /> :
             beers.map(beer =>

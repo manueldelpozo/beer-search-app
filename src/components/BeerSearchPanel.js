@@ -136,6 +136,7 @@ export default function BeerSearchPanel() {
                     </Grid>
                     <Grid item xs={12} md={2}>
                         <Button
+                            data-testid="search-button"
                             variant="contained" 
                             color="default" 
                             fullWidth
@@ -148,7 +149,11 @@ export default function BeerSearchPanel() {
                     </Grid>
                 </Grid>
             </form>
-            <BeerList className={classes.list} beers={ beers } isLoading={ isLoading } />
+            <BeerList  
+                className={classes.list} 
+                beers={ beers } 
+                isLoading={ isLoading } 
+            />
         </Fragment>
     )
 }
