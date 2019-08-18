@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { Fragment, useState, useCallback, useEffect } from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
@@ -74,7 +74,7 @@ const BeerCard = props => {
         <CardContent className={classes.cardContent}>
             {isLoading ?
             <CircularProgress className={classes.progress} /> :
-            <>
+            <Fragment>
                 <img
                     height="140"
                     src={ beer.image_url }
@@ -89,7 +89,7 @@ const BeerCard = props => {
                 <Typography variant="body2" color="textSecondary" component="strong">
                     ABV: { beer.abv } %
                 </Typography>
-            </>
+            </Fragment>
             }
         </CardContent>
         <CardActions>

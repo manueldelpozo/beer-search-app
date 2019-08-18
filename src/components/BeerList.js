@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
     root: {
       width: '100%',
       backgroundColor: theme.palette.background.paper,
-      marginTop: 30
+      margin: 30
     },
     inline: {
       display: 'inline',
@@ -24,30 +24,15 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export default function BeerList() {
+const BeerList = ({beers, isLoading}) => {
     const classes = useStyles()
     const [selectedBeerId, setSelectedBeerId] = useState(0)
-    const [beers, setBeers] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
 
     const onSelectBeer = (event, id) => {
         setSelectedBeerId(id)
         //const newEvent = new CustomEvent('on-select-beer', { id });
         //document.dispatchEvent(newEvent);
     }
-
-    const fetchBeers = async () => {
-        setIsLoading(true)
-        const url = `https://api.punkapi.com/v2/beers`
-        const response = await fetch(url)
-        const json = await response.json()
-        setBeers(json)
-        setIsLoading(false)
-    }
-
-    useEffect(() => {
-        fetchBeers()
-    }, [])
 
     return (
         <List className={classes.root}>
@@ -87,3 +72,5 @@ export default function BeerList() {
         </List>
     );
 }
+
+export default BeerList

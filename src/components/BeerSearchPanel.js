@@ -1,5 +1,7 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react'
+import React, { Fragment, useState, useEffect, useCallback, useRef } from 'react'
 import useFetch from '../api/useFetch.js'
+
+import BeerList from './BeerList.js'
 
 import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField';
@@ -41,6 +43,9 @@ const useStyles = makeStyles(theme => ({
     rightIcon: {
         marginLeft: theme.spacing(1),
     },
+    list: {
+        margin: theme.spacing(3),
+    }
 }))
 
 export default function BeerSearchPanel() {
@@ -49,6 +54,7 @@ export default function BeerSearchPanel() {
     const [isValidInput, setIsValidInput] = useState(true)
     const [errorMessage, setErrorMessage] = useState('')
     const [beers, setBeers] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
     const inputEl = useRef(null);
 
     const validation = {
@@ -84,6 +90,7 @@ export default function BeerSearchPanel() {
     }, [searchBy])
 
     const fetchBeersBy = async () => {
+        setIsLoading(true)
         try {
             const url = `https://api.punkapi.com/v2/beers?${searchBy}=${inputEl.current.value}`
             const response = await fetch(url)
@@ -94,53 +101,56 @@ export default function BeerSearchPanel() {
             setErrorMessage('We cannot find your beers. Please try again')
             inputEl.current.focus()
         }
+        setIsLoading(false)
     }
 
     return (
-        <form className={classes.form} onSubmit={ searchBeer }>
-            <Grid container spacing={10} alignItems="center">
-                <Grid item xs={6}>
-                    <TextField
-                        inputRef={inputEl}
-                        id="input-search"
-                        label={`Type a ${searchBy.replace('_', ' ').replace('before', ' beer before date (MM-YYYY)')}`}
-                        type="search"
-                        className={classes.textField}
-                        margin="normal"
-                        variant="filled"
-                        onInput={ validateInput }
-                        error={ !isValidInput }
-                        helperText={ errorMessage }
-                    />
-                </Grid>
-                <Grid item xs={4}>
-                    <FormControl component="fieldset" className={classes.formControl}>
-                        <FormLabel component="legend">Search by</FormLabel>
-                        <RadioGroup
-                            aria-label="seach by"
-                            name="searchBy"
-                            className={classes.group}
-                            value={searchBy}
-                            onChange={changeSearchBy}
+        <Fragment>
+            <form className={classes.form} onSubmit={ searchBeer }>
+                <Grid container spacing={10} alignItems="center">
+                    <Grid item xs={12} md={6}>
+                        <TextField
+                            inputRef={inputEl}
+                            id="input-search"
+                            label={`Type a ${searchBy.replace('_', ' ').replace('before', ' beer before date (MM-YYYY)')}`}
+                            type="search"
+                            className={classes.textField}
+                            margin="normal"
+                            variant="filled"
+                            onInput={ validateInput }
+                            error={ !isValidInput }
+                            helperText={ errorMessage }
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                        <FormControl component="fieldset" className={classes.formControl}>
+                            <FormLabel component="legend">Search by</FormLabel>
+                            <RadioGroup
+                                aria-label="seach by"
+                                name="searchBy"
+                                className={classes.group}
+                                value={searchBy}
+                                onChange={changeSearchBy}
+                            >
+                                <FormControlLabel className={classes.groupItem} value="beer_name" control={<Radio />} label="Name" />
+                                <FormControlLabel className={classes.groupItem} value="brewed_before" control={<Radio />} label="Brewed before date" />
+                            </RadioGroup>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={12} md={2}>
+                        <Button
+                            variant="contained" 
+                            color="default" 
+                            className={classes.button}
+                            type="submit"
                         >
-                            <FormControlLabel className={classes.groupItem} value="beer_name" control={<Radio />} label="Name" />
-                            <FormControlLabel className={classes.groupItem} value="brewed_before" control={<Radio />} label="Brewed before date" />
-                        </RadioGroup>
-                        
-                    </FormControl>
+                            Search
+                            <Search className={classes.rightIcon} />
+                        </Button>
+                    </Grid>
                 </Grid>
-                <Grid item xs={2}>
-                    <Button
-                        variant="contained" 
-                        color="default" 
-                        className={classes.button}
-                        type="submit"
-                    >
-                        Search
-                        <Search className={classes.rightIcon} />
-                    </Button>
-                </Grid>
-            </Grid>
-        </form>
+            </form>
+            <BeerList className={classes.list} beers={ beers } isLoading={ isLoading } />
+        </Fragment>
     );
 }
