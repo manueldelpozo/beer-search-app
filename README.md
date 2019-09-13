@@ -8,15 +8,16 @@ The task requires to create a simple one-page application that interacts with th
 
 ## The solution
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
 There are several reasons to use React Hooks:
-
 - Separate (and isolated) concerns.
 - Avoid juggling between HOCs, render props, children as functions, and classes.
 - Avoid duplicated logic between lifecycle methods and components.
 
+The form validation is changed according to the filter choice. On submitting the search button it scrolls down to a result beer list from the PunkAPI.
+
 For test, I use `react-hooks-testing-library` that allows to create a simple test harness for React hooks.
+
+Technologies used: React, React Hooks, Material UI, React Hooks Testing Library, Webpack, Yarn
 
 ## Installation
 
